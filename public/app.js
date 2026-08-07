@@ -51,6 +51,7 @@ const DOM = {
   chapterSearch: document.getElementById('chapter-search'),
   
   // Reader Navbar
+  readerHeader: document.getElementById('reader-header'),
   closeReaderBtn: document.getElementById('close-reader-btn'),
   readerMangaTitle: document.getElementById('reader-manga-title'),
   readerChapterTitle: document.getElementById('reader-chapter-title'),
@@ -80,6 +81,7 @@ const DOM = {
   imgCenter: document.getElementById('img-center'),
   
   // Reader Controls
+  readerFooter: document.getElementById('reader-footer'),
   prevChapterBtn: document.getElementById('prev-chapter-btn'),
   nextChapterBtn: document.getElementById('next-chapter-btn'),
   readerPageIndicator: document.getElementById('reader-page-indicator'),
@@ -89,8 +91,8 @@ const DOM = {
   // Settings modal
   settingsModal: document.getElementById('settings-modal'),
   closeSettingsBtn: document.getElementById('close-settings-btn'),
-  settingsOptionBtns: document.querySelectorAll('.settings-option-btn'),
-  settingsThemeBtns: document.querySelectorAll('.settings-theme-btn')
+  settingsOptionBtns: document.querySelectorAll('[data-setting]'),
+  settingsThemeBtns: document.querySelectorAll('[data-value]:not([data-setting])')
 };
 
 // --- Initialization ---
@@ -147,17 +149,7 @@ function updateSettingsUI() {
       : 'Reading Direction: Left to Right (Western)';
   }
 
-  // Adjust cues
-  const leftCue = DOM.navAreaLeft.querySelector('.nav-cue-text');
-  const rightCue = DOM.navAreaRight.querySelector('.nav-cue-text');
-  
-  if (state.settings.direction === 'rtl') {
-    leftCue.innerText = 'Next Page';
-    rightCue.innerText = 'Prev Page';
-  } else {
-    leftCue.innerText = 'Prev Page';
-    rightCue.innerText = 'Next Page';
-  }
+  // Adjust direction cues (no text spans in new design, just icons)
 }
 
 function applyTheme(theme) {
@@ -333,7 +325,7 @@ function renderChaptersList() {
     card.href = '#';
     card.className = 'chapter-card';
     card.innerHTML = `
-      <div class="font-bold text-white text-base md:text-lg mb-1">${chapter.title}</div>
+      <div class="font-bold text-base md:text-lg mb-1">${chapter.title}</div>
       <div class="text-xs text-gray-500 truncate">${chapter.description || 'Read chapter online'}</div>
     `;
     
@@ -460,9 +452,17 @@ function updateChapterNavigationButtons() {
   DOM.nextChapterBtn.disabled = !state.nextChapterUrl;
 }
 
+// --- Mobile Width Helper ---
+function isMobile() {
+  return window.innerWidth <= 768;
+}
+
 // --- Reader Viewport Layout Switcher ---
 function switchViewportLayout() {
-  const mode = state.settings.layout;
+  let mode = state.settings.layout;
+  if (isMobile() && mode === 'double') {
+    mode = 'single';
+  }
   
   DOM.bookViewport.classList.add('hidden');
   DOM.singleViewport.classList.add('hidden');
@@ -519,7 +519,11 @@ function renderBookPages() {
   if (state.currentPageIndex < 0) state.currentPageIndex = 0;
   if (state.currentPageIndex >= total) state.currentPageIndex = total - 1;
   
-  const mode = state.settings.layout;
+  let mode = state.settings.layout;
+  if (isMobile() && mode === 'double') {
+    mode = 'single';
+  }
+  
   const rtl = state.settings.direction === 'rtl';
   
   // 1. Long Strip Vertical Scroll Render
@@ -594,10 +598,15 @@ function renderSingleView() {
   
   // Hide image initially, load and animate in
   DOM.imgCenter.classList.remove('loaded');
+  
+  const placeholder = DOM.pageCenter.querySelector('.page-placeholder');
+  if (placeholder) placeholder.style.display = 'flex';
+  
   DOM.imgCenter.src = src;
   
   DOM.imgCenter.onload = () => {
     DOM.imgCenter.classList.add('loaded');
+    if (placeholder) placeholder.style.display = 'none';
   };
   
   DOM.pageCenter.querySelector('.page-number-badge').innerText = `Page ${idx + 1}`;
@@ -626,8 +635,14 @@ function renderDoubleView(rtl) {
     DOM.pageRight.classList.add('center');
     
     DOM.imgRight.classList.remove('loaded');
+    const placeholder = DOM.pageRight.querySelector('.page-placeholder');
+    if (placeholder) placeholder.style.display = 'flex';
+    
     DOM.imgRight.src = currentUrl;
-    DOM.imgRight.onload = () => DOM.imgRight.classList.add('loaded');
+    DOM.imgRight.onload = () => {
+      DOM.imgRight.classList.add('loaded');
+      if (placeholder) placeholder.style.display = 'none';
+    };
     
     DOM.pageRight.querySelector('.page-number-badge').innerText = `Page ${i + 1} [Spread]`;
     DOM.readerPageIndicator.innerText = `Page ${i + 1} of ${total}`;
@@ -673,10 +688,15 @@ function renderDoubleView(rtl) {
   if (pLeftUrl) {
     DOM.imgLeft.style.display = 'block';
     DOM.imgLeft.classList.remove('loaded');
+    const placeholder = DOM.pageLeft.querySelector('.page-placeholder');
+    if (placeholder) placeholder.style.display = 'flex';
+    
     DOM.imgLeft.src = pLeftUrl;
-    DOM.imgLeft.onload = () => DOM.imgLeft.classList.add('loaded');
+    DOM.imgLeft.onload = () => {
+      DOM.imgLeft.classList.add('loaded');
+      if (placeholder) placeholder.style.display = 'none';
+    };
     DOM.pageLeft.querySelector('.page-number-badge').innerText = `Page ${pLeftNum}`;
-    DOM.pageLeft.querySelector('.page-placeholder').style.display = 'none';
   } else {
     DOM.imgLeft.style.display = 'none';
     DOM.pageLeft.querySelector('.page-number-badge').innerText = '';
@@ -687,10 +707,15 @@ function renderDoubleView(rtl) {
   if (pRightUrl) {
     DOM.imgRight.style.display = 'block';
     DOM.imgRight.classList.remove('loaded');
+    const placeholder = DOM.pageRight.querySelector('.page-placeholder');
+    if (placeholder) placeholder.style.display = 'flex';
+    
     DOM.imgRight.src = pRightUrl;
-    DOM.imgRight.onload = () => DOM.imgRight.classList.add('loaded');
+    DOM.imgRight.onload = () => {
+      DOM.imgRight.classList.add('loaded');
+      if (placeholder) placeholder.style.display = 'none';
+    };
     DOM.pageRight.querySelector('.page-number-badge').innerText = `Page ${pRightNum}`;
-    DOM.pageRight.querySelector('.page-placeholder').style.display = 'none';
   } else {
     DOM.imgRight.style.display = 'none';
     DOM.pageRight.querySelector('.page-number-badge').innerText = '';
@@ -711,7 +736,10 @@ function renderDoubleView(rtl) {
 // Page Forward
 function pageForward() {
   const total = state.pages.length;
-  const layout = state.settings.layout;
+  let layout = state.settings.layout;
+  if (isMobile() && layout === 'double') {
+    layout = 'single';
+  }
   
   if (state.currentPageIndex >= total - 1) {
     // We reached the end of the chapter! Auto trigger next chapter if exists
@@ -778,7 +806,12 @@ function pageBackward() {
   
   triggerTurnAnimation('backward');
   
-  if (state.settings.layout === 'double') {
+  let layout = state.settings.layout;
+  if (isMobile() && layout === 'double') {
+    layout = 'single';
+  }
+  
+  if (layout === 'double') {
     // Check if 2 pages back is landscape
     const stepBack2Idx = Math.max(0, state.currentPageIndex - 2);
     const stepBack1Idx = Math.max(0, state.currentPageIndex - 1);
@@ -895,6 +928,7 @@ function setupEventListeners() {
   // Settings button modal toggler
   DOM.readerSettingsBtn.addEventListener('click', () => {
     DOM.settingsModal.classList.remove('hidden');
+    DOM.settingsModal.style.display = 'flex';
   });
 
   DOM.closeSettingsBtn.addEventListener('click', () => {
@@ -1019,6 +1053,58 @@ function setupEventListeners() {
       }
     } else if (e.key === 'f' || e.key === 'F') {
       DOM.readerFullscreenBtn.click();
+    }
+  });
+
+  // --- Mobile Touch Gestures & Tap Actions ---
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let touchEndX = 0;
+  let touchEndY = 0;
+
+  DOM.readerStage.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
+  }, { passive: true });
+
+  DOM.readerStage.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    touchEndY = e.changedTouches[0].screenY;
+    
+    const deltaX = touchEndX - touchStartX;
+    const deltaY = touchEndY - touchStartY;
+    
+    // Horizontal swipe threshold: 50px. Must be mostly horizontal.
+    if (Math.abs(deltaX) > 50 && Math.abs(deltaX) > Math.abs(deltaY)) {
+      if (deltaX < 0) {
+        pageForward();
+      } else {
+        pageBackward();
+      }
+    }
+  }, { passive: true });
+
+  // Center Tap to Toggle Header/Footer Navigation Bars
+  DOM.readerStage.addEventListener('click', (e) => {
+    // Ignore clicks on controls, overlays, inputs, modals, or dropdowns
+    if (e.target.closest('#settings-modal') || 
+        e.target.closest('#reader-chapters-dropdown') || 
+        e.target.closest('.icon-btn') || 
+        e.target.closest('.glass-btn') || 
+        e.target.closest('.nav-overlay') || 
+        e.target.closest('input')) {
+      return;
+    }
+    
+    DOM.readerHeader.classList.toggle('ui-hidden');
+    DOM.readerFooter.classList.toggle('ui-hidden');
+  });
+
+  // Responsive Layout Window Resize Redraw Handler
+  window.addEventListener('resize', () => {
+    if (!DOM.readerScreen.classList.contains('hidden')) {
+      switchViewportLayout();
+      renderBookPages();
     }
   });
 }

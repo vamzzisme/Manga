@@ -124,7 +124,102 @@ const SCRAPERS = {
       }
     }
   },
-  
+
+  // MangaDex — uses their public REST API (no scraping needed)
+  mangadex: {
+    name: 'MangaDex',
+    match: (url) => url.includes('mangadex.org'),
+
+    parseChapters: async (url) => {
+      try {
+        // Extract manga ID from URL like https://mangadex.org/title/<uuid>/<slug>
+        const match = url.match(/title\/([a-f0-9-]{36})/);
+        if (!match) throw new Error('Could not find MangaDex manga ID in URL');
+        const mangaId = match[1];
+
+        // Fetch manga metadata
+        const metaRes = await axios.get(`https://api.mangadex.org/manga/${mangaId}`, {
+          headers: { 'User-Agent': USER_AGENT }
+        });
+        const mangaTitle = metaRes.data.data.attributes.title.en
+          || Object.values(metaRes.data.data.attributes.title)[0]
+          || 'Unknown Manga';
+
+        // Fetch chapters (English, ordered by chapter number desc)
+        let chapters = [];
+        let offset = 0;
+        const limit = 100;
+
+        while (true) {
+          const chapRes = await axios.get('https://api.mangadex.org/chapter', {
+            params: {
+              manga: mangaId,
+              translatedLanguage: ['en'],
+              limit,
+              offset,
+              order: { chapter: 'desc' },
+              'includes[]': 'scanlation_group'
+            },
+            headers: { 'User-Agent': USER_AGENT }
+          });
+
+          const data = chapRes.data;
+          for (const ch of data.data) {
+            const attrs = ch.attributes;
+            const chapterNum = attrs.chapter ? `Chapter ${attrs.chapter}` : 'Oneshot';
+            const title = attrs.title ? `${chapterNum}: ${attrs.title}` : chapterNum;
+            chapters.push({
+              title,
+              description: `Vol. ${attrs.volume || '?'} • ${attrs.pages || '?'} pages`,
+              url: `https://mangadex.org/chapter/${ch.id}`
+            });
+          }
+
+          if (data.data.length < limit || chapters.length >= 500) break;
+          offset += limit;
+        }
+
+        return { mangaTitle, chapters };
+      } catch (error) {
+        console.error('MangaDex parseChapters error:', error.message);
+        throw error;
+      }
+    },
+
+    parsePages: async (url) => {
+      try {
+        // Extract chapter ID
+        const match = url.match(/chapter\/([a-f0-9-]{36})/);
+        if (!match) throw new Error('Could not find MangaDex chapter ID in URL');
+        const chapterId = match[1];
+
+        // Get chapter metadata
+        const metaRes = await axios.get(`https://api.mangadex.org/chapter/${chapterId}`, {
+          headers: { 'User-Agent': USER_AGENT }
+        });
+        const attrs = metaRes.data.data.attributes;
+        const chapterNum = attrs.chapter ? `Chapter ${attrs.chapter}` : 'Oneshot';
+        const chapterTitle = attrs.title ? `${chapterNum}: ${attrs.title}` : chapterNum;
+
+        // Get server + hash for images
+        const serverRes = await axios.get(`https://api.mangadex.org/at-home/server/${chapterId}`, {
+          headers: { 'User-Agent': USER_AGENT }
+        });
+        const { baseUrl, chapter: chData } = serverRes.data;
+        const hash = chData.hash;
+
+        const pages = chData.data.map(
+          filename => `${baseUrl}/data/${hash}/${filename}`
+        );
+
+        return { chapterTitle, pages, prevUrl: null, nextUrl: null };
+      } catch (error) {
+        console.error('MangaDex parsePages error:', error.message);
+        throw error;
+      }
+    }
+  },
+
   // Generic / Fallback Scraper for basic pages
   generic: {
     name: 'Generic Web Page',

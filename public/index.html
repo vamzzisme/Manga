@@ -3,378 +3,322 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manga Book Reader - Premium Interactive Reading</title>
-    
-    <!-- Meta tags for SEO & Rich Preview -->
-    <meta name="description" content="Experience manga like a real book. Interactive double-page spread, right-to-left flipping, reading history, and seamless website scraping without trackers.">
-    <meta property="og:title" content="Manga Book Reader">
-    <meta property="og:description" content="Read manga in a beautiful premium interactive book layout.">
-    <meta property="og:type" content="website">
-
-    <!-- Fonts -->
+    <title>MangaBook — Read Manga Like a Real Book</title>
+    <meta name="description" content="Premium manga reader with book-style page turning. Supports TCB Scans, MangaDex, and more.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Custom CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-dark text-light font-main overflow-x-hidden">
-    
-    <!-- Dashboard Screen -->
-    <div id="dashboard-screen" class="min-h-screen flex flex-col">
-        <!-- Header -->
-        <header class="container mx-auto px-6 py-6 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="brand-logo flex items-center justify-center">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-accent animate-pulse-slow">
-                        <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
-                        <path d="M6 6h10"/>
-                        <path d="M6 10h10"/>
-                        <path d="M6 14h10"/>
-                    </svg>
-                </div>
-                <span class="font-display font-extrabold text-2xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-accent to-accent-light">MANGA<span class="text-white font-medium text-lg ml-1">Book</span></span>
+<body class="overflow-x-hidden">
+
+<!-- ====================================================
+     DASHBOARD SCREEN
+     ==================================================== -->
+<div id="dashboard-screen" class="min-h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <header class="container mx-auto px-6 py-5 flex items-center justify-between" style="position:relative;z-index:1">
+        <div class="flex items-center gap-3">
+            <div class="brand-logo animate-pulse-slow">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/>
+                    <path d="M8 7h8M8 11h8M8 15h5"/>
+                </svg>
             </div>
-            <div class="flex items-center gap-4">
-                <button id="theme-toggle-btn" class="icon-btn" title="Toggle Theme" aria-label="Toggle Theme">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+            <span class="font-display font-extrabold text-2xl tracking-tight" style="background:linear-gradient(135deg,#a78bfa,#e879f9);-webkit-background-clip:text;background-clip:text;color:transparent">Manga<span style="color:var(--text-secondary);font-weight:400;font-size:18px">Book</span></span>
+        </div>
+        <div class="flex items-center gap-3">
+            <button id="theme-toggle-btn" class="icon-btn" title="Toggle Theme" aria-label="Toggle Theme">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <main class="flex-grow container mx-auto px-6 flex flex-col justify-center max-w-4xl" style="position:relative;z-index:1;padding-top:40px;padding-bottom:60px">
+
+        <div class="text-center mb-10">
+            <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(124,58,237,0.12);border:1px solid rgba(124,58,237,0.25);border-radius:99px;padding:6px 16px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent-light);margin-bottom:24px">
+                ✦ Premium Manga Reader
+            </div>
+            <h1 class="hero-title mb-4">
+                Read Manga Like a<br><span class="highlight">Real Book</span>
+            </h1>
+            <p class="hero-sub">
+                Double-page spreads, right-to-left page turning, reading history.<br>
+                Works with TCB Scans, MangaDex, and more.
+            </p>
+        </div>
+
+        <!-- Search Box -->
+        <div class="search-box mb-3">
+            <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input type="text" id="manga-url-input"
+                   placeholder="Paste any manga URL — TCB Scans, MangaDex, or any chapter link…"
+                   aria-label="Manga URL">
+            <button id="load-manga-btn" class="load-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                Load
+            </button>
+        </div>
+        <p style="text-align:center;font-size:11px;color:var(--text-muted);margin-bottom:48px">
+            Supports tcbonepiecechapters.com · mangadex.org · and other manga sites
+        </p>
+
+        <!-- Quick Read -->
+        <div class="mb-10">
+            <div class="section-label">Quick Read</div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <button class="preset-card" data-url="https://tcbonepiecechapters.com/mangas/5/one-piece">
+                    <div style="display:flex;align-items:center;gap:12px">
+                        <div class="preset-icon">🏴‍☠️</div>
+                        <div>
+                            <h4>One Piece</h4>
+                            <p>TCB Scans · Ongoing</p>
+                        </div>
+                    </div>
+                    <div class="arrow">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </div>
+                </button>
+                <button class="preset-card" data-url="https://tcbonepiecechapters.com/mangas/26/jujutsu-kaisen">
+                    <div style="display:flex;align-items:center;gap:12px">
+                        <div class="preset-icon">⚡</div>
+                        <div>
+                            <h4>Jujutsu Kaisen</h4>
+                            <p>TCB Scans · Ongoing</p>
+                        </div>
+                    </div>
+                    <div class="arrow">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </div>
+                </button>
+                <button class="preset-card" data-url="https://tcbonepiecechapters.com/mangas/4/my-hero-academia">
+                    <div style="display:flex;align-items:center;gap:12px">
+                        <div class="preset-icon">🦸</div>
+                        <div>
+                            <h4>My Hero Academia</h4>
+                            <p>TCB Scans · Ongoing</p>
+                        </div>
+                    </div>
+                    <div class="arrow">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                    </div>
                 </button>
             </div>
-        </header>
+        </div>
 
-        <!-- Main Hero & Input -->
-        <main class="flex-grow container mx-auto px-6 py-8 flex flex-col justify-center max-w-4xl">
-            <div class="text-center mb-12">
-                <h1 class="font-display font-extrabold text-4xl md:text-6xl tracking-tight mb-4 leading-tight">
-                    Read Manga Like a <span class="bg-gradient-to-r from-accent to-accent-light bg-clip-text text-transparent">Real Book</span>
-                </h1>
-                <p class="text-gray-400 text-lg max-w-2xl mx-auto">
-                    Turn pages, read double-spreads, and experience digital manga in an authentic, right-to-left layout right in your browser.
-                </p>
+        <!-- Reading History -->
+        <div id="history-section" class="hidden mb-10">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+                <div class="section-label" style="margin-bottom:0;flex:1">Continue Reading</div>
+                <button id="clear-history-btn" style="font-size:11px;font-weight:600;color:var(--text-muted);transition:color 0.2s ease" onmouseover="this.style.color='var(--accent-light)'" onmouseout="this.style.color='var(--text-muted)'">Clear All</button>
             </div>
+            <div id="history-grid" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+        </div>
+    </main>
 
-            <!-- Search and URL Input Form -->
-            <div class="glass-card p-2 rounded-2xl flex flex-col md:flex-row gap-2 shadow-2xl border border-white/10 hover:border-accent/30 transition-all duration-300 mb-12">
-                <div class="flex-grow flex items-center px-4 py-3 gap-3">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400">
-                        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
-                    </svg>
-                    <input type="text" id="manga-url-input" 
-                           placeholder="Paste TCB Scans series/chapter URL (e.g. https://tcbonepiecechapters.com/mangas/5/one-piece)" 
-                           class="bg-transparent border-none outline-none w-full text-white text-base placeholder-gray-500"
-                           aria-label="Manga URL Input">
-                </div>
-                <button id="load-manga-btn" class="bg-gradient-to-r from-accent to-accent-dark hover:from-accent-light hover:to-accent text-white font-semibold px-8 py-3 rounded-xl transition-all duration-300 shadow-lg shadow-accent/20 flex items-center justify-center gap-2">
-                    <span>Load Manga</span>
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
-                    </svg>
-                </button>
-            </div>
+    <footer class="py-6 text-center border-t" style="font-size:11px;color:var(--text-muted);position:relative;z-index:1">
+        MangaBook is an open-source viewer. All content belongs to original publishers.
+    </footer>
+</div>
 
-            <!-- Presets / Quick Links -->
-            <div class="mb-12">
-                <h3 class="text-xs uppercase tracking-widest text-gray-500 font-bold mb-4">Quick Read</h3>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <button class="preset-card glass-card text-left p-4 rounded-xl border border-white/5 hover:border-accent/40 transition-all duration-300 flex items-center justify-between group" data-url="https://tcbonepiecechapters.com/mangas/5/one-piece">
-                        <div>
-                            <h4 class="font-semibold text-white group-hover:text-accent transition-colors">One Piece</h4>
-                            <p class="text-xs text-gray-400">TCB Scans Official</p>
-                        </div>
-                        <span class="text-accent opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                        </span>
-                    </button>
-                    <!-- Additional preset placeholders that map to other popular TCB pages -->
-                    <button class="preset-card glass-card text-left p-4 rounded-xl border border-white/5 hover:border-accent/40 transition-all duration-300 flex items-center justify-between group" data-url="https://tcbonepiecechapters.com/mangas/26/jujutsu-kaisen">
-                        <div>
-                            <h4 class="font-semibold text-white group-hover:text-accent transition-colors">Jujutsu Kaisen</h4>
-                            <p class="text-xs text-gray-400">TCB Scans Official</p>
-                        </div>
-                        <span class="text-accent opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                        </span>
-                    </button>
-                    <button class="preset-card glass-card text-left p-4 rounded-xl border border-white/5 hover:border-accent/40 transition-all duration-300 flex items-center justify-between group" data-url="https://tcbonepiecechapters.com/mangas/4/my-hero-academia">
-                        <div>
-                            <h4 class="font-semibold text-white group-hover:text-accent transition-colors">My Hero Academia</h4>
-                            <p class="text-xs text-gray-400">TCB Scans Official</p>
-                        </div>
-                        <span class="text-accent opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                        </span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Reading History / Library -->
-            <div id="history-section" class="hidden mb-12">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-xs uppercase tracking-widest text-gray-500 font-bold">Recent Readings</h3>
-                    <button id="clear-history-btn" class="text-xs text-gray-400 hover:text-accent transition-colors">Clear All</button>
-                </div>
-                <div id="history-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Loaded dynamically via app.js -->
-                </div>
-            </div>
-        </main>
-        
-        <!-- Footer -->
-        <footer class="py-6 text-center text-xs text-gray-500 border-t border-white/5 mt-auto">
-            <p>Manga Book Reader is an open-source viewer. All content belongs to original publishers and scanlation groups.</p>
-        </footer>
+<!-- ====================================================
+     CHAPTERS SCREEN
+     ==================================================== -->
+<div id="chapters-screen" class="hidden min-h-screen flex flex-col container mx-auto px-6 py-6">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;flex-wrap:wrap;gap:16px">
+        <button id="back-to-home-btn" class="back-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            Back
+        </button>
+        <div class="chapter-search-box" style="flex:1;max-width:320px">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--text-muted);flex-shrink:0"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input type="text" id="chapter-search" placeholder="Search chapters…">
+        </div>
     </div>
 
-    <!-- Chapter Selector Screen -->
-    <div id="chapters-screen" class="hidden min-h-screen flex flex-col container mx-auto px-6 py-6">
-        <div class="flex items-center gap-4 mb-8">
-            <button id="back-to-home-btn" class="back-btn flex items-center gap-2 text-gray-400 hover:text-accent font-semibold transition-all">
+    <div style="margin-bottom:28px">
+        <h2 id="manga-title" class="font-display font-extrabold" style="font-size:clamp(24px,5vw,44px);letter-spacing:-0.02em;line-height:1.1;margin-bottom:6px">One Piece</h2>
+        <p id="manga-source" style="font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent-light)">TCB Scans</p>
+    </div>
+
+    <div id="chapters-loader" class="flex items-center justify-center" style="min-height:300px">
+        <div class="loader-spinner"></div>
+    </div>
+    <div id="chapters-list" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mb-12"></div>
+</div>
+
+<!-- ====================================================
+     READER SCREEN
+     ==================================================== -->
+<div id="reader-screen" class="hidden fixed inset-0 z-50 flex flex-col select-none overflow-hidden">
+
+    <!-- Reader Header -->
+    <header id="reader-header" class="px-6 py-3 flex items-center justify-between transition-all duration-300">
+        <div class="flex items-center gap-3">
+            <button id="close-reader-btn" class="icon-btn" title="Exit Reader">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <div>
+                <div id="reader-manga-title" style="font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-muted)">One Piece</div>
+                <div id="reader-chapter-title" style="font-size:14px;font-weight:600;color:var(--text-primary);max-width:240px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Chapter</div>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <div class="relative">
+                <button id="reader-chapters-dropdown-btn" class="glass-btn flex items-center gap-2 px-3 py-2 rounded-lg" style="font-size:12px;font-weight:600">
+                    Chapters
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+                <div id="reader-chapters-dropdown" class="hidden"></div>
+            </div>
+            <button id="reader-settings-btn" class="icon-btn" title="Settings">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            </button>
+            <button id="reader-fullscreen-btn" class="icon-btn" title="Fullscreen">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Reader Stage -->
+    <div id="reader-stage" class="flex-grow relative flex items-center justify-center" style="padding:16px">
+
+        <!-- Page loader -->
+        <div id="reader-pages-loader" class="absolute flex flex-col items-center justify-center z-10" style="gap:12px">
+            <div class="loader-spinner"></div>
+            <div style="font-size:12px;color:var(--text-muted)">Loading pages…</div>
+        </div>
+
+        <!-- Nav overlays -->
+        <div id="nav-area-left" class="nav-overlay prev" title="Previous">
+            <div class="nav-cue">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-                <span>Back to Home</span>
+            </div>
+        </div>
+        <div id="nav-area-right" class="nav-overlay next" title="Next">
+            <div class="nav-cue">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </div>
+        </div>
+
+        <!-- Book Container -->
+        <div id="book-container" class="book-container">
+            <!-- Double page spread -->
+            <div id="book-viewport" class="book-viewport double-page">
+                <div id="page-left" class="page-slot left">
+                    <div class="page-content-wrapper" style="width:100%;height:100%;position:relative;display:flex;align-items:center;justify-content:center">
+                        <img id="img-left" class="manga-page-img" alt="Left Page" src="">
+                        <div class="page-placeholder"></div>
+                    </div>
+                    <div class="page-number-badge left">L</div>
+                </div>
+                <div class="book-seam"></div>
+                <div id="page-right" class="page-slot right">
+                    <div class="page-content-wrapper" style="width:100%;height:100%;position:relative;display:flex;align-items:center;justify-content:center">
+                        <img id="img-right" class="manga-page-img" alt="Right Page" src="">
+                        <div class="page-placeholder"></div>
+                    </div>
+                    <div class="page-number-badge right">R</div>
+                </div>
+            </div>
+
+            <!-- Single page viewport -->
+            <div id="single-viewport" class="book-viewport single-page hidden">
+                <div id="page-center" class="page-slot center">
+                    <div class="page-content-wrapper" style="width:100%;height:100%;position:relative;display:flex;align-items:center;justify-content:center">
+                        <img id="img-center" class="manga-page-img" alt="Page" src="">
+                        <div class="page-placeholder"></div>
+                    </div>
+                    <div class="page-number-badge center">C</div>
+                </div>
+            </div>
+
+            <!-- Scroll/strip viewport -->
+            <div id="scroll-viewport" class="book-viewport scroll-page hidden overflow-y-auto w-full h-full" style="max-width:800px;margin:0 auto;padding:16px 12px"></div>
+        </div>
+
+        <!-- Settings modal (inside stage so it overlays correctly) -->
+        <div id="settings-modal" class="hidden" style="position:absolute;top:0;right:0;bottom:0;left:0;z-index:40;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px">
+            <div class="glass-card" style="width:100%;max-width:400px;padding:24px;border-radius:var(--radius-lg);position:relative">
+                <button id="close-settings-btn" style="position:absolute;top:16px;right:16px;color:var(--text-muted);transition:color 0.2s" onmouseover="this.style.color='var(--text-primary)'" onmouseout="this.style.color='var(--text-muted)'">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                </button>
+                <h3 class="font-display font-bold" style="font-size:18px;margin-bottom:24px">Reader Settings</h3>
+
+                <div style="display:flex;flex-direction:column;gap:20px">
+                    <!-- Layout -->
+                    <div>
+                        <div class="settings-group-label">Layout</div>
+                        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+                            <button class="setting-btn active" data-setting="layout" data-value="double">Double Page</button>
+                            <button class="setting-btn" data-setting="layout" data-value="single">Single Page</button>
+                            <button class="setting-btn" data-setting="layout" data-value="scroll">Long Strip</button>
+                        </div>
+                    </div>
+
+                    <!-- Direction -->
+                    <div>
+                        <div class="settings-group-label">Reading Direction</div>
+                        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px">
+                            <button class="setting-btn active" data-setting="direction" data-value="rtl">← Right to Left</button>
+                            <button class="setting-btn" data-setting="direction" data-value="ltr">Left to Right →</button>
+                        </div>
+                    </div>
+
+                    <!-- Fit -->
+                    <div>
+                        <div class="settings-group-label">Image Fit</div>
+                        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+                            <button class="setting-btn active" data-setting="fit" data-value="contain">Fit Screen</button>
+                            <button class="setting-btn" data-setting="fit" data-value="height">Fit Height</button>
+                            <button class="setting-btn" data-setting="fit" data-value="width">Fit Width</button>
+                        </div>
+                    </div>
+
+                    <!-- Theme -->
+                    <div>
+                        <div class="settings-group-label">Background Theme</div>
+                        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+                            <button class="setting-btn active" data-value="dark" style="background:#06060a;border-color:rgba(255,255,255,0.15);color:#f1f0ff">Dark</button>
+                            <button class="setting-btn" data-value="sepia" style="background:#181710;border-color:rgba(210,180,120,0.2);color:#f0e6c8">Sepia</button>
+                            <button class="setting-btn" data-value="light" style="background:#f0eff8;border-color:rgba(0,0,0,0.1);color:#1a1830">Light</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reader Footer -->
+    <footer id="reader-footer" class="px-6 py-3 flex items-center gap-4 transition-all duration-300" style="flex-wrap:wrap">
+        <div class="flex items-center gap-3" style="flex-shrink:0">
+            <button id="prev-chapter-btn" class="glass-btn flex items-center gap-1 px-3 py-2 rounded-lg" style="font-size:12px;font-weight:600" disabled>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+                Prev Ch
+            </button>
+            <div id="reader-page-indicator" style="font-size:13px;font-weight:600;color:var(--text-secondary);white-space:nowrap;min-width:90px;text-align:center">Page 0 of 0</div>
+            <button id="next-chapter-btn" class="glass-btn flex items-center gap-1 px-3 py-2 rounded-lg" style="font-size:12px;font-weight:600" disabled>
+                Next Ch
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </button>
         </div>
 
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
-            <div>
-                <h2 id="manga-title" class="font-display font-extrabold text-3xl md:text-5xl text-white tracking-tight mb-2">One Piece</h2>
-                <p id="manga-source" class="text-accent text-sm font-semibold tracking-wider uppercase">TCB Scans</p>
-            </div>
-            
-            <div class="w-full md:w-80 glass-card p-1 rounded-xl flex items-center px-3 border border-white/5 shadow">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-500 mr-2">
-                    <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
-                </svg>
-                <input type="text" id="chapter-search" placeholder="Search chapters..." class="bg-transparent border-none outline-none w-full text-white text-sm py-2">
-            </div>
+        <div class="flex-grow flex items-center gap-3 w-full" style="min-width:0">
+            <span style="font-size:10px;font-weight:700;color:var(--text-muted)">Start</span>
+            <input type="range" id="reader-scrubber" min="0" max="0" value="0" style="flex:1" aria-label="Page scrubber">
+            <span style="font-size:10px;font-weight:700;color:var(--text-muted)">End</span>
         </div>
 
-        <!-- Chapters List -->
-        <div id="chapters-loader" class="flex-grow flex items-center justify-center min-h-[300px]">
-            <div class="loader-spinner"></div>
+        <div style="flex-shrink:0;display:flex;align-items:center;gap:8px">
+            <span style="font-size:11px;color:var(--text-muted)">RTL</span>
+            <button id="direction-indicator-btn" class="glass-btn px-3 py-1 rounded-lg" style="font-size:11px;font-weight:700;letter-spacing:0.04em">L → R</button>
         </div>
-        
-        <div id="chapters-list" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
-            <!-- Loaded dynamically -->
-        </div>
-    </div>
+    </footer>
+</div>
 
-    <!-- Reader Screen (Fullscreen Book Reader) -->
-    <div id="reader-screen" class="hidden fixed inset-0 z-50 bg-[#0f0f13] flex flex-col select-none overflow-hidden">
-        
-        <!-- Reader Navbar -->
-        <header id="reader-header" class="px-6 py-4 flex items-center justify-between border-b border-white/5 bg-[#0f0f13]/90 backdrop-blur z-20 transition-all duration-300">
-            <div class="flex items-center gap-4">
-                <button id="close-reader-btn" class="icon-btn text-gray-400 hover:text-white" title="Exit Reader">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-                </button>
-                <div>
-                    <h4 id="reader-manga-title" class="text-xs text-gray-400 font-semibold uppercase tracking-wider">One Piece</h4>
-                    <h3 id="reader-chapter-title" class="text-sm md:text-base text-white font-bold truncate max-w-[200px] md:max-w-md">Chapter 1190: One Whose Death is Celebrated</h3>
-                </div>
-            </div>
-
-            <div class="flex items-center gap-3">
-                <!-- Chapter Selector Dropdown -->
-                <div class="relative">
-                    <button id="reader-chapters-dropdown-btn" class="glass-btn text-xs md:text-sm font-semibold flex items-center gap-2 px-3 py-2 rounded-lg">
-                        <span>Chapters</span>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-                    </button>
-                    <div id="reader-chapters-dropdown" class="hidden absolute right-0 mt-2 w-64 max-h-96 overflow-y-auto bg-card rounded-xl border border-white/10 shadow-2xl z-30 py-2">
-                        <!-- Loaded dynamically -->
-                    </div>
-                </div>
-
-                <!-- Settings Toggle -->
-                <button id="reader-settings-btn" class="icon-btn text-gray-400 hover:text-white" title="Reader Settings">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-                </button>
-
-                <!-- Fullscreen Toggle -->
-                <button id="reader-fullscreen-btn" class="icon-btn text-gray-400 hover:text-white" title="Toggle Fullscreen">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
-                </button>
-            </div>
-        </header>
-
-        <!-- Book Reader Stage -->
-        <div id="reader-stage" class="flex-grow relative flex items-center justify-center p-4">
-            
-            <!-- Loader for pages -->
-            <div id="reader-pages-loader" class="absolute flex flex-col items-center justify-center z-10">
-                <div class="loader-spinner mb-4"></div>
-                <div class="text-sm text-gray-400">Fetching manga pages...</div>
-            </div>
-
-            <!-- Clickable Page Navigation Overlays -->
-            <div id="nav-area-left" class="nav-overlay left-0" title="Go Page Left">
-                <div class="nav-cue">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
-                    <span class="nav-cue-text">Next Page</span>
-                </div>
-            </div>
-            
-            <div id="nav-area-right" class="nav-overlay right-0" title="Go Page Right">
-                <div class="nav-cue">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-                    <span class="nav-cue-text">Prev Page</span>
-                </div>
-            </div>
-
-            <!-- Book Container -->
-            <div id="book-container" class="book-container">
-                <!-- Two-page book spread layout -->
-                <div id="book-viewport" class="book-viewport double-page">
-                    <!-- Left Page Page Slot -->
-                    <div id="page-left" class="page-slot left">
-                        <div class="page-shadow"></div>
-                        <div class="page-content-wrapper">
-                            <img id="img-left" class="manga-page-img" alt="Left Page" src="">
-                            <div class="page-placeholder"></div>
-                        </div>
-                        <div class="page-number-badge left">L</div>
-                    </div>
-
-                    <!-- Page Seam / Binder Line -->
-                    <div class="book-seam"></div>
-
-                    <!-- Right Page Page Slot -->
-                    <div id="page-right" class="page-slot right">
-                        <div class="page-shadow"></div>
-                        <div class="page-content-wrapper">
-                            <img id="img-right" class="manga-page-img" alt="Right Page" src="">
-                            <div class="page-placeholder"></div>
-                        </div>
-                        <div class="page-number-badge right">R</div>
-                    </div>
-                </div>
-
-                <!-- Single Page viewport (used dynamically for single page layouts & mobile) -->
-                <div id="single-viewport" class="book-viewport single-page hidden">
-                    <div id="page-center" class="page-slot center">
-                        <div class="page-content-wrapper">
-                            <img id="img-center" class="manga-page-img" alt="Center Page" src="">
-                            <div class="page-placeholder"></div>
-                        </div>
-                        <div class="page-number-badge center">C</div>
-                    </div>
-                </div>
-
-                <!-- Vertical Scroll layout (stacked images) -->
-                <div id="scroll-viewport" class="book-viewport scroll-page hidden overflow-y-auto w-full h-full max-w-2xl mx-auto px-4 py-8">
-                    <!-- Images appended dynamically -->
-                </div>
-            </div>
-        </div>
-
-        <!-- Bottom Reader Controller -->
-        <footer id="reader-footer" class="px-6 py-4 flex flex-col md:flex-row items-center gap-4 bg-[#0f0f13]/90 border-t border-white/5 backdrop-blur z-20 transition-all duration-300">
-            <div class="flex items-center gap-4 w-full md:w-auto justify-between md:justify-start">
-                <button id="prev-chapter-btn" class="glass-btn flex items-center gap-1 text-xs font-semibold py-2 px-3 rounded-lg" disabled>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
-                    <span>Prev Ch</span>
-                </button>
-                <div id="reader-page-indicator" class="text-sm font-semibold text-gray-300 min-w-24 text-center">
-                    Pages 0 - 0 of 0
-                </div>
-                <button id="next-chapter-btn" class="glass-btn flex items-center gap-1 text-xs font-semibold py-2 px-3 rounded-lg" disabled>
-                    <span>Next Ch</span>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                </button>
-            </div>
-
-            <!-- Page Scrubber (Range Slider) -->
-            <div class="flex-grow flex items-center gap-3 w-full">
-                <span class="text-xs text-gray-500 font-bold" id="scrubber-start-label">Start</span>
-                <input type="range" id="reader-scrubber" min="0" max="0" value="0" class="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-accent" aria-label="Page Scrubber">
-                <span class="text-xs text-gray-500 font-bold" id="scrubber-end-label">End</span>
-            </div>
-
-            <div class="flex items-center gap-2 w-full md:w-auto justify-end">
-                <span class="text-xs text-gray-400">RTL Mode</span>
-                <button id="direction-indicator-btn" class="badge-btn" title="Reading Direction: Right to Left (Manga)">R → L</button>
-            </div>
-        </footer>
-
-        <!-- Reader Settings Sidebar Modal -->
-        <div id="settings-modal" class="hidden fixed inset-0 z-40 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-            <div class="glass-card w-full max-w-md p-6 rounded-2xl border border-white/10 shadow-2xl relative">
-                <button id="close-settings-btn" class="absolute top-4 right-4 text-gray-400 hover:text-white">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
-                </button>
-                <h3 class="font-display font-extrabold text-xl mb-6">Reader Settings</h3>
-                
-                <div class="space-y-6">
-                    <!-- Layout Mode -->
-                    <div>
-                        <label class="block text-xs uppercase tracking-wider text-gray-400 font-bold mb-3">Layout Mode</label>
-                        <div class="grid grid-cols-3 gap-2">
-                            <button class="settings-option-btn active" data-setting="layout" data-value="double">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mb-1"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M12 2v20"/></svg>
-                                <span>Double Page</span>
-                            </button>
-                            <button class="settings-option-btn" data-setting="layout" data-value="single">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mb-1"><rect width="18" height="18" x="3" y="3" rx="2"/></svg>
-                                <span>Single Page</span>
-                            </button>
-                            <button class="settings-option-btn" data-setting="layout" data-value="scroll">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mb-1"><path d="M8 3v18M16 3v18"/></svg>
-                                <span>Long Strip</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Reading Direction -->
-                    <div>
-                        <label class="block text-xs uppercase tracking-wider text-gray-400 font-bold mb-3">Reading Direction</label>
-                        <div class="grid grid-cols-2 gap-2">
-                            <button class="settings-option-btn active" data-setting="direction" data-value="rtl">
-                                <span>Right-to-Left (Manga)</span>
-                            </button>
-                            <button class="settings-option-btn" data-setting="direction" data-value="ltr">
-                                <span>Left-to-Right (Western)</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Fit Mode -->
-                    <div>
-                        <label class="block text-xs uppercase tracking-wider text-gray-400 font-bold mb-3">Image Fit</label>
-                        <div class="grid grid-cols-3 gap-2">
-                            <button class="settings-option-btn active" data-setting="fit" data-value="contain">
-                                <span>Fit Screen</span>
-                            </button>
-                            <button class="settings-option-btn" data-setting="fit" data-value="height">
-                                <span>Fit Height</span>
-                            </button>
-                            <button class="settings-option-btn" data-setting="fit" data-value="width">
-                                <span>Fit Width</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Background Theme -->
-                    <div>
-                        <label class="block text-xs uppercase tracking-wider text-gray-400 font-bold mb-3">Reader Background</label>
-                        <div class="grid grid-cols-3 gap-2">
-                            <button class="settings-theme-btn bg-[#0f0f13] border-white/20 active" data-value="dark">
-                                <span class="text-white text-xs">Dark Abyss</span>
-                            </button>
-                            <button class="settings-theme-btn bg-[#181816] border-[#383329]" data-value="sepia">
-                                <span class="text-[#f5deb3] text-xs">Warm Sepia</span>
-                            </button>
-                            <button class="settings-theme-btn bg-[#e5e5eb] border-black/10" data-value="light">
-                                <span class="text-black text-xs">Clean Light</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main JavaScript App -->
-    <script src="app.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
