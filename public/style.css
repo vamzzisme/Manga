@@ -560,6 +560,16 @@ input[type="text"]::placeholder { color: var(--text-muted); }
 .chapter-search-box:focus-within { border-color: var(--border-accent); }
 .chapter-search-box input { padding: 10px 0; font-size: 14px; }
 
+/* Preset grid — responsive */
+.preset-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+@media (min-width: 600px) {
+    .preset-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
 /* Loader */
 .loader-spinner {
     width: 40px; height: 40px;
@@ -596,6 +606,17 @@ input[type="text"]::placeholder { color: var(--text-muted); }
 }
 .chapter-card:hover { border-color: var(--border-accent); transform: translateX(4px); }
 .chapter-card:hover::before { opacity: 1; }
+
+/* Chapters list responsive grid */
+#chapters-list {
+    grid-template-columns: 1fr;
+}
+@media (min-width: 640px) {
+    #chapters-list { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1024px) {
+    #chapters-list { grid-template-columns: repeat(3, 1fr); }
+}
 
 /* ============================================================
    READER SCREEN
@@ -906,22 +927,35 @@ body.theme-light #reader-footer {
    MOBILE
    ============================================================ */
 @media (max-width: 768px) {
+    /* Hero */
+    .hero-title { font-size: clamp(26px, 7vw, 38px); }
+    .hero-sub { font-size: 14px; }
+    .search-box { flex-direction: column; gap: 10px; padding: 14px; border-radius: var(--radius-md); }
+    .load-btn { width: 100%; justify-content: center; }
+
+    /* Reader nav overlays */
     .nav-overlay { width: 30% !important; }
     .nav-cue { display: none !important; }
 
-    #reader-footer {
-        flex-direction: column;
-        gap: 10px !important;
-        padding: 12px 16px !important;
-    }
-    #reader-footer > div {
-        width: 100%;
-        justify-content: space-between;
-    }
-    #reader-header { padding: 10px 16px !important; }
-    .glass-card { padding: 14px !important; }
+    /* Reader footer stacks on mobile */
+    #reader-footer { flex-direction: column; gap: 10px; padding: 10px 14px; }
+    #reader-footer > div { width: 100%; justify-content: space-between; }
 
-    .hero-title { font-size: clamp(28px, 8vw, 40px); }
-    .search-box { flex-direction: column; padding: 12px; border-radius: var(--radius-md); }
-    .load-btn { width: 100%; justify-content: center; }
+    /* Settings panel — full-width on small screens, anchored right */
+    #settings-modal {
+        width: calc(100vw - 32px);
+        right: -4px;
+        left: auto;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    /* Chapters screen padding */
+    #chapters-screen { padding: 0 16px !important; }
+    #chapters-list { grid-template-columns: 1fr !important; }
+}
+
+@media (max-width: 400px) {
+    .preset-grid { grid-template-columns: 1fr; }
+    #reader-header .glass-btn span { display: none; }
 }

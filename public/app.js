@@ -17,7 +17,7 @@ const state = {
   // Settings (default values)
   settings: {
     layout: 'double', // 'double', 'single', 'scroll'
-    direction: 'rtl', // 'rtl', 'ltr'
+    direction: 'ltr', // 'rtl', 'ltr'
     fit: 'contain',    // 'contain', 'height', 'width'
     theme: 'dark'     // 'dark', 'sepia', 'light'
   },
@@ -925,18 +925,22 @@ function setupEventListeners() {
     DOM.readerChaptersDropdown.classList.add('hidden');
   });
 
-  // Settings button modal toggler
-  DOM.readerSettingsBtn.addEventListener('click', () => {
-    DOM.settingsModal.classList.remove('hidden');
-    DOM.settingsModal.style.display = 'flex';
+  // Settings dropdown toggler (drops down near settings button)
+  DOM.readerSettingsBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    DOM.settingsModal.classList.toggle('hidden');
+    // close chapters dropdown if open
+    DOM.readerChaptersDropdown.classList.add('hidden');
   });
 
   DOM.closeSettingsBtn.addEventListener('click', () => {
     DOM.settingsModal.classList.add('hidden');
   });
-  
-  DOM.settingsModal.addEventListener('click', (e) => {
-    if (e.target === DOM.settingsModal) {
+
+  // Click anywhere outside the settings wrapper to close
+  document.addEventListener('click', (e) => {
+    const wrapper = document.getElementById('settings-wrapper');
+    if (wrapper && !wrapper.contains(e.target)) {
       DOM.settingsModal.classList.add('hidden');
     }
   });
