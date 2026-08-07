@@ -1,0 +1,751 @@
+/* ==========================================================================
+   Manga Book Reader - Premium CSS Design System & Layouts
+   ========================================================================== */
+
+/* --- CSS custom properties / Design Tokens --- */
+:root {
+    --accent: #8b5cf6; /* Vibrant violet */
+    --accent-light: #a78bfa;
+    --accent-dark: #6d28d9;
+    --accent-rgb: 139, 92, 246;
+
+    /* Theme colors (Default: Dark Abyss) */
+    --bg-main: #09090b;
+    --bg-card: rgba(25, 25, 30, 0.6);
+    --bg-card-hover: rgba(35, 35, 45, 0.8);
+    --border-color: rgba(255, 255, 255, 0.08);
+    --text-primary: #f4f4f5;
+    --text-secondary: #a1a1aa;
+    --text-muted: #71717a;
+    --book-spine: rgba(0, 0, 0, 0.5);
+    
+    /* Layout heights */
+    --header-height: 72px;
+    --footer-height: 60px;
+    
+    /* Shadows */
+    --shadow-soft: 0 4px 20px -2px rgba(0, 0, 0, 0.3);
+    --shadow-glow: 0 0 20px rgba(139, 92, 246, 0.15);
+}
+
+/* Theme variations */
+body.theme-sepia {
+    --bg-main: #181816;
+    --bg-card: rgba(40, 38, 33, 0.7);
+    --bg-card-hover: rgba(54, 51, 44, 0.9);
+    --border-color: rgba(245, 222, 179, 0.08);
+    --text-primary: #ebd9be;
+    --text-secondary: #c2b095;
+    --text-muted: #8c7b65;
+    --book-spine: rgba(0, 0, 0, 0.6);
+}
+
+body.theme-light {
+    --bg-main: #f4f4f7;
+    --bg-card: rgba(255, 255, 255, 0.85);
+    --bg-card-hover: rgba(255, 255, 255, 0.98);
+    --border-color: rgba(0, 0, 0, 0.08);
+    --text-primary: #18181b;
+    --text-secondary: #52525b;
+    --text-muted: #8e8e93;
+    --book-spine: rgba(0, 0, 0, 0.15);
+}
+
+/* --- Base Resets --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+button {
+    background: none;
+    border: none;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+}
+
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    transition: background-color 0.4s ease, color 0.4s ease;
+    min-height: 100vh;
+}
+
+.font-display {
+    font-family: 'Outfit', sans-serif;
+}
+
+.text-accent {
+    color: var(--accent);
+}
+
+/* --- Scrollbar styling --- */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.1);
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+}
+
+/* --- Glassmorphism UI Components --- */
+.glass-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-soft);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+    background: var(--bg-card-hover);
+}
+
+.glass-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.glass-btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--accent);
+}
+
+.glass-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.icon-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.icon-btn:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--accent);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15);
+}
+
+.icon-btn:active {
+    transform: translateY(0);
+}
+
+/* --- Premium Logo Glow & Animation --- */
+.brand-logo {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+    box-shadow: var(--shadow-glow);
+}
+
+.animate-pulse-slow {
+    animation: pulseGlow 4s infinite alternate;
+}
+
+@keyframes pulseGlow {
+    0% { filter: drop-shadow(0 0 2px rgba(139, 92, 246, 0.3)); }
+    100% { filter: drop-shadow(0 0 10px rgba(139, 92, 246, 0.7)); }
+}
+
+/* --- General Helper Classes --- */
+.container {
+    max-width: 1200px;
+}
+
+.bg-gradient-to-r {
+    background-image: linear-gradient(to right, var(--accent), var(--accent-light));
+}
+
+.bg-clip-text {
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+.text-transparent {
+    color: transparent;
+}
+
+/* --- Home / Hero Elements --- */
+.preset-card {
+    cursor: pointer;
+}
+
+.history-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    border-radius: 16px;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    overflow: hidden;
+}
+
+.history-cover {
+    width: 60px;
+    height: 80px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #1f2937, #111827);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+.progress-bar-container {
+    height: 4px;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+}
+
+/* --- Loader Spinner --- */
+.loader-spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid rgba(255, 255, 255, 0.05);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+    to { transform: rotate(360deg); }
+}
+
+/* --- Chapter Cards --- */
+.chapter-card {
+    display: block;
+    padding: 20px;
+    border-radius: 16px;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid var(--border-color);
+    background: var(--bg-card);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.chapter-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px -10px rgba(139, 92, 246, 0.2);
+}
+
+/* ==========================================================================
+   Premium Book Reader Stage & Spreads
+   ========================================================================== */
+
+/* Outer stage */
+#reader-stage {
+    perspective: 1500px; /* 3D Perspective for book-bending look */
+    overflow: hidden;
+}
+
+.book-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    max-width: 90vw;
+    max-height: 80vh;
+    position: relative;
+}
+
+/* Layout Views */
+.book-viewport {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: 12px;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6);
+    overflow: hidden;
+    background: #060608;
+    transition: all 0.4s ease;
+}
+
+/* Specific viewport variations */
+.book-viewport.double-page {
+    aspect-ratio: 1.414; /* Standard golden ratio for open books */
+    max-width: 1400px;
+}
+
+.book-viewport.single-page {
+    aspect-ratio: 0.707; /* Single page portrait ratio */
+    max-width: 700px;
+}
+
+.book-viewport.scroll-page {
+    aspect-ratio: auto;
+    max-width: 800px;
+    background: transparent;
+    box-shadow: none;
+}
+
+/* Dynamic Fit Mode configurations */
+.fit-contain .manga-page-img {
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+}
+.fit-height .manga-page-img {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+}
+.fit-width .manga-page-img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+/* Page Slot styling */
+.page-slot {
+    flex: 1;
+    height: 100%;
+    background-color: #121216;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+/* Custom bending gradients to simulate paper curved depth */
+.page-slot.left .page-shadow {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to right, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 8%, rgba(255,255,255,0.01) 90%, rgba(0,0,0,0.4) 100%);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.page-slot.right .page-shadow {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to left, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 8%, rgba(255,255,255,0.01) 90%, rgba(0,0,0,0.4) 100%);
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Center book spine seam */
+.book-seam {
+    width: 10px;
+    height: 100%;
+    background: linear-gradient(to right, 
+        rgba(0, 0, 0, 0.4) 0%, 
+        rgba(0, 0, 0, 0.8) 50%, 
+        rgba(0, 0, 0, 0.4) 100%);
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.9);
+    position: absolute;
+    left: calc(50% - 5px);
+    z-index: 10;
+    pointer-events: none;
+}
+
+.page-content-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.manga-page-img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    transition: transform 0.2s ease, opacity 0.3s ease;
+    user-select: none;
+    pointer-events: none;
+    opacity: 0; /* Animated in via JS when loaded */
+}
+
+.manga-page-img.loaded {
+    opacity: 1;
+}
+
+/* Double spread support for landscape manga files taking full screen width */
+.double-spread-img {
+    position: absolute;
+    width: 200% !important;
+    max-width: 200% !important;
+    height: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain !important;
+    z-index: 5;
+}
+.double-spread-left {
+    left: 0;
+    object-position: left center !important;
+}
+.double-spread-right {
+    right: 0;
+    object-position: right center !important;
+}
+
+/* Badges for page numbering */
+.page-number-badge {
+    position: absolute;
+    bottom: 12px;
+    padding: 2px 8px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-muted);
+    z-index: 3;
+}
+.page-number-badge.left { left: 16px; }
+.page-number-badge.right { right: 16px; }
+.page-number-badge.center { bottom: 12px; }
+
+/* Interactive overlays for page flipping */
+.nav-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 15%;
+    min-width: 60px;
+    max-width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 15;
+    cursor: pointer;
+    background: transparent;
+    transition: background 0.3s ease;
+}
+
+.nav-overlay.left-0 {
+    left: 0;
+}
+.nav-overlay.right-0 {
+    right: 0;
+}
+
+.nav-overlay:hover {
+    background: linear-gradient(to var(--hover-dir, right), rgba(139, 92, 246, 0.08), rgba(0, 0, 0, 0));
+}
+.nav-overlay.left-0 { --hover-dir: right; }
+.nav-overlay.right-0 { --hover-dir: left; }
+
+/* Glowing floating arrow cue for mouse hover */
+.nav-cue {
+    display: flex;
+    flex-col: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 8px;
+    border-radius: 12px;
+    background: rgba(15, 15, 19, 0.85);
+    border: 1px solid var(--border-color);
+    color: var(--accent);
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 0.2s ease;
+    pointer-events: none;
+    box-shadow: var(--shadow-soft);
+    display: flex;
+    flex-direction: column;
+}
+
+.nav-overlay:hover .nav-cue {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.nav-cue-text {
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-primary);
+}
+
+/* Page turn animation states */
+.page-turn-flip {
+    animation: turnFlip 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes turnFlip {
+    0% { transform: scale(1) rotateY(0deg); opacity: 1; filter: brightness(1); }
+    50% { opacity: 0.8; filter: brightness(0.8); }
+    100% { transform: scale(1) rotateY(0deg); opacity: 1; filter: brightness(1); }
+}
+
+.page-turn-slide {
+    animation: turnSlide 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+@keyframes turnSlide {
+    0% { opacity: 0; transform: translateX(20px); }
+    100% { opacity: 1; transform: translateX(0); }
+}
+
+/* --- Reader Settings Screen --- */
+.settings-option-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 6px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.settings-option-btn:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.settings-option-btn.active {
+    background: rgba(139, 92, 246, 0.1);
+    border-color: var(--accent);
+    color: var(--text-primary);
+}
+
+.settings-theme-btn {
+    border-radius: 10px;
+    padding: 16px 8px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.settings-theme-btn.active {
+    border-color: var(--accent) !important;
+}
+
+/* --- Direction Badge Button --- */
+.badge-btn {
+    background: rgba(139, 92, 246, 0.1);
+    border: 1px solid var(--accent);
+    color: var(--accent-light);
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 4px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.badge-btn:hover {
+    background: var(--accent);
+    color: white;
+}
+
+/* --- Custom Range Input Scrubber --- */
+input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    box-shadow: 0 0 10px var(--accent);
+    transition: transform 0.1s ease;
+}
+input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.3);
+}
+
+/* --- Responsive Adaptations --- */
+@media (max-width: 768px) {
+    .book-viewport.double-page {
+        /* Force single page viewport styling on mobile devices even in double mode */
+        aspect-ratio: 0.707;
+    }
+    
+    #page-left, .book-seam {
+        display: none !important;
+    }
+    
+    .page-slot.right {
+        flex: 1;
+    }
+}
+
+/* --- CSS Utility Classes (Tailwind Mappings) --- */
+.hidden { display: none !important; }
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+.justify-start { justify-content: flex-start; }
+.justify-end { justify-content: flex-end; }
+.flex-grow { flex-grow: 1; }
+.flex-shrink-0 { flex-shrink: 0; }
+
+.grid { display: grid; }
+.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.col-span-2 { grid-column: span 2 / span 2; }
+.col-span-full { grid-column: 1 / -1; }
+
+.relative { position: relative; }
+.absolute { position: absolute; }
+.fixed { position: fixed; }
+.inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+.z-50 { z-index: 50; }
+.z-40 { z-index: 40; }
+.z-30 { z-index: 30; }
+.z-20 { z-index: 20; }
+.z-10 { z-index: 10; }
+
+.mx-auto { margin-left: auto; margin-right: auto; }
+.mt-auto { margin-top: auto; }
+.mb-1 { margin-bottom: 4px; }
+.mb-2 { margin-bottom: 8px; }
+.mb-3 { margin-bottom: 12px; }
+.mb-4 { margin-bottom: 16px; }
+.mb-6 { margin-bottom: 24px; }
+.mb-8 { margin-bottom: 32px; }
+.mb-12 { margin-bottom: 48px; }
+.mt-0.5 { margin-top: 2px; }
+.mt-2 { margin-top: 8px; }
+.mt-4 { margin-top: 16px; }
+.mt-6 { margin-top: 24px; }
+.mt-8 { margin-top: 32px; }
+.ml-1 { margin-left: 4px; }
+.mr-2 { margin-right: 8px; }
+
+.p-1 { padding: 4px; }
+.p-2 { padding: 8px; }
+.p-3 { padding: 12px; }
+.p-4 { padding: 16px; }
+.p-6 { padding: 24px; }
+.px-3 { padding-left: 12px; padding-right: 12px; }
+.py-2 { padding-top: 8px; padding-bottom: 8px; }
+.py-3 { padding-top: 12px; padding-bottom: 12px; }
+.px-4 { padding-left: 16px; padding-right: 16px; }
+.px-6 { padding-left: 24px; padding-right: 24px; }
+.py-6 { padding-top: 24px; padding-bottom: 24px; }
+.py-8 { padding-top: 32px; padding-bottom: 32px; }
+.py-1.5 { padding-top: 6px; padding-bottom: 6px; }
+
+.w-full { width: 100%; }
+.w-80 { width: 320px; }
+.w-64 { width: 256px; }
+.max-w-md { max-width: 448px; }
+.max-w-2xl { max-width: 672px; }
+.max-w-4xl { max-width: 896px; }
+.min-h-screen { min-height: 100vh; }
+.h-full { height: 100%; }
+
+.rounded { border-radius: 4px; }
+.rounded-lg { border-radius: 8px; }
+.rounded-xl { border-radius: 12px; }
+.rounded-2xl { border-radius: 16px; }
+.border { border: 1px solid var(--border-color); }
+.border-t { border-top: 1px solid var(--border-color); }
+
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+.truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.text-xs { font-size: 12px; }
+.text-sm { font-size: 14px; }
+.text-base { font-size: 16px; }
+.text-lg { font-size: 18px; }
+.text-xl { font-size: 20px; }
+.text-2xl { font-size: 24px; }
+.text-3xl { font-size: 30px; }
+.text-4xl { font-size: 36px; }
+.text-5xl { font-size: 48px; }
+.text-6xl { font-size: 60px; }
+
+.font-bold { font-weight: 700; }
+.font-semibold { font-weight: 600; }
+.font-medium { font-weight: 500; }
+.font-extrabold { font-weight: 800; }
+
+.uppercase { text-transform: uppercase; }
+.tracking-tight { letter-spacing: -0.025em; }
+.tracking-wide { letter-spacing: 0.025em; }
+.tracking-wider { letter-spacing: 0.05em; }
+.tracking-widest { letter-spacing: 0.1em; }
+
+.text-gray-400 { color: var(--text-secondary); }
+.text-gray-500 { color: var(--text-muted); }
+.text-white { color: #ffffff; }
+
+/* Responsive Grid and Flex */
+@media (min-width: 640px) {
+    .sm\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (min-width: 768px) {
+    .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .md\:items-end { align-items: flex-end; }
+    .md\:flex-row { flex-direction: row; }
+}
+
+@media (min-width: 1024px) {
+    .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.top-4 { top: 16px; }
+.right-4 { right: 16px; }
+.left-0 { left: 0; }
+.right-0 { right: 0; }
+
+
