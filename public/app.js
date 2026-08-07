@@ -996,14 +996,53 @@ function setupEventListeners() {
     }
   });
 
-  // Fullscreen support
-  DOM.readerFullscreenBtn.addEventListener('click', () => {
+  // Fullscreen — puts ONLY the book stage into fullscreen (hides header/footer)
+  let fsExitBtn = null;
+
+  function enterBookFullscreen() {
+    const stage = DOM.readerStage;
+    const req = stage.requestFullscreen || stage.webkitRequestFullscreen || stage.mozRequestFullScreen;
+    if (!req) return;
+    req.call(stage).catch(err => console.error('Fullscreen error:', err.message));
+
+    // Inject floating exit button inside the fullscreen element
+    fsExitBtn = document.createElement('button');
+    fsExitBtn.id = 'fs-exit-btn';
+    fsExitBtn.innerHTML = `
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M8 3v3a2 2 0 0 1-2 2H3"/><path d="M21 8h-3a2 2 0 0 1-2-2V3"/>
+        <path d="M3 16h3a2 2 0 0 1 2 2v3"/><path d="M16 21v-3a2 2 0 0 1 2-2h3"/>
+      </svg>
+      Exit`;
+    fsExitBtn.onclick = exitBookFullscreen;
+    stage.appendChild(fsExitBtn);
+  }
+
+  function exitBookFullscreen() {
+    if (document.fullscreenElement || document.webkitFullscreenElement) {
+      (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+    }
+    if (fsExitBtn && fsExitBtn.parentNode) {
+      fsExitBtn.parentNode.removeChild(fsExitBtn);
+      fsExitBtn = null;
+    }
+  }
+
+  document.addEventListener('fullscreenchange', () => {
     if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch(err => {
-        console.error(`Error attempting to enable fullscreen: ${err.message}`);
-      });
+      // Exited via ESC or OS gesture — clean up button
+      if (fsExitBtn && fsExitBtn.parentNode) {
+        fsExitBtn.parentNode.removeChild(fsExitBtn);
+        fsExitBtn = null;
+      }
+    }
+  });
+
+  DOM.readerFullscreenBtn.addEventListener('click', () => {
+    if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+      enterBookFullscreen();
     } else {
-      document.exitFullscreen();
+      exitBookFullscreen();
     }
   });
 
